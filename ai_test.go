@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"testing"
 )
 
@@ -9,6 +10,11 @@ import (
 // Unless the AI actually crashes the program or enters an infinite loop,
 // and as long as the gameplay is enjoyable (tested), errors within the AI simply give the player an advantage.
 // Apart from that, there's no "correct" way to play the game either.
+
+func TestMain(m *testing.M) {
+	hideAI = true // force AI to hide its board during tests.
+	os.Exit(m.Run())
+}
 
 // With this passing, we can say with a reasonably high degree of accuracy that the AI is stable.
 // For a game, this should suffice.
