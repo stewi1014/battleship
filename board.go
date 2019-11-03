@@ -119,11 +119,13 @@ func (b *Board) PlayerShot(x, y int, hit bool) {
 }
 
 // PlayerHasShot returns true if the player has already shot the given position.
+// x,y should be checked for validity beforehand.
 func (b *Board) PlayerHasShot(x, y int) bool {
 	return b[x][y]&playerShot > 0
 }
 
 // PlayerHasHit returns true if the player has hit an enemy ship at the given position.
+// x,y should be checked for validity beforehand.
 func (b *Board) PlayerHasHit(x, y int) bool {
 	return b[x][y]&playerHit > 0
 }
@@ -242,6 +244,7 @@ func (b *Board) PlaceShip(x, y, direction int, shipType byte) error {
 
 // IsSunk returns true if the ship at the location x, y has been sunk.
 // If x,y is not on a ship, it returns false.
+// x,y should be checked for validity beforehand.
 func (b *Board) IsSunk(x, y int) bool {
 	shipType := b[x][y] & shipMask
 	if shipType == 0 { // Not a ship
@@ -321,13 +324,14 @@ func ParsePosition(location string) (x int, y int, err error) {
 	if location == "" {
 		return 0, 0, errors.New("no location specified")
 	}
+
 	location = strings.TrimSpace(strings.ToLower(location))
-	y = int(location[0] - 'a')
-	x, err = strconv.Atoi(location[1:])
+	y = int(location[0] - 'a')          // first byte of string, offset by the ascii code for 'a'
+	x, err = strconv.Atoi(location[1:]) // string->int conversion for remaining string bytes.
 	if err != nil {
 		return 0, 0, fmt.Errorf("invalid location %v", location)
 	}
-	x-- // our position numbering system starts at 1
+	x-- // our printed position format starts at 1, but coordinates start at 0.
 	if !IsValid(x, y) {
 		return 0, 0, fmt.Errorf("invalid location %v", location)
 	}

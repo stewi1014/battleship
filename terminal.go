@@ -22,65 +22,6 @@ type TerminalUI struct {
 	input *bufio.Reader
 }
 
-// GetBoard implements Player.
-func (g *TerminalUI) GetBoard() *Board {
-	return &g.board
-}
-
-// Turn implements Player.
-// it asks the player to take a turn and executes it.
-func (g *TerminalUI) Turn(remote Link) (won bool, err error) {
-	fmt.Println("Current score", g.score)
-	fmt.Print(g.board)
-
-	var x, y int
-	// Loop until we have a good location
-	for {
-		fmt.Println("Enter shot location (h for help)")
-		str, err := g.input.ReadString('\n')
-		if err != nil {
-			return false, err
-		}
-		str = strings.ToLower(strings.TrimSpace(str))
-
-		if str == "h" {
-			fmt.Println("Syntax: [location]")
-			fmt.Println("location is a-j for vertical position, 1-10 for horizontal position. \n i.e. g6")
-			continue
-		}
-
-		x, y, err = ParsePosition(str)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-
-		if g.board.PlayerHasShot(x, y) {
-			fmt.Println("You've already shot that location!")
-			continue
-		}
-
-		break
-	}
-
-	hit, sunk := remote.TakeShot(x, y)
-	g.board.PlayerShot(x, y, hit)
-	if hit {
-		fmt.Println("Hit!")
-		if sunk != 0 {
-			fmt.Printf("You sunk their %v!\n", shipNames[sunk])
-			g.score++
-		}
-	} else {
-		fmt.Println("Miss!")
-	}
-
-	fmt.Println("Press enter to finish turn")
-	g.input.ReadString('\n')
-
-	return g.score >= 5, nil
-}
-
 // SetUp asks the user to place their ships on the board, writing them to it.
 func (g *TerminalUI) SetUp() error {
 	var ships = []byte{
@@ -152,4 +93,63 @@ i.e h4 down
 	fmt.Println(g.board)
 	fmt.Println("All ships placed")
 	return nil
+}
+
+// GetBoard implements Player.
+func (g *TerminalUI) GetBoard() *Board {
+	return &g.board
+}
+
+// Turn implements Player.
+// it asks the player to take a turn and executes it.
+func (g *TerminalUI) Turn(remote Link) (won bool, err error) {
+	fmt.Println("Current score", g.score)
+	fmt.Print(g.board)
+
+	var x, y int
+	// Loop until we have a good location
+	for {
+		fmt.Println("Enter shot location (h for help)")
+		str, err := g.input.ReadString('\n')
+		if err != nil {
+			return false, err
+		}
+		str = strings.ToLower(strings.TrimSpace(str))
+
+		if str == "h" {
+			fmt.Println("Syntax: [location]")
+			fmt.Println("location is a-j for vertical position, 1-10 for horizontal position. \n i.e. g6")
+			continue
+		}
+
+		x, y, err = ParsePosition(str)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		if g.board.PlayerHasShot(x, y) {
+			fmt.Println("You've already shot that location!")
+			continue
+		}
+
+		break
+	}
+
+	hit, sunk := remote.TakeShot(x, y)
+	g.board.PlayerShot(x, y, hit)
+	if hit {
+		fmt.Println("Hit!")
+		if sunk != 0 {
+			fmt.Printf("You sunk their %v!\n", shipNames[sunk])
+			g.score++
+		}
+	} else {
+		fmt.Println("Miss!")
+	}
+
+	fmt.Println("Press enter to finish turn")
+	g.input.ReadString('\n')
+
+	return g.score >= 5, nil
 }

@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// NewAI returns a new AI for playing agaist the player at remote.
+// NewAI returns a new AI with randomly placed ships, and using the current Unix time as a rng seed.
 func NewAI() *AI {
 	rng := rand.New(rand.NewSource(time.Now().UnixNano()))
 	return &AI{
@@ -15,7 +15,7 @@ func NewAI() *AI {
 	}
 }
 
-// AI is a simple battleship-playing AI
+// AI is a simple battleship-playing AI.
 type AI struct {
 	board Board
 	score int
@@ -33,7 +33,7 @@ func (a *AI) GetBoard() *Board {
 
 // Turn implements Player.
 func (a *AI) Turn(remote Link) (won bool, err error) {
-	// print board after we return if showAI is true
+	// print board after we return if hideAI is false
 	defer func() {
 		if !hideAI {
 			fmt.Println("AI board")
@@ -168,7 +168,7 @@ func (a *AI) findVerticalShot(x, y int) (int, bool) {
 	return 0, false
 }
 
-// findAdjacentShot searched for a shot in the positions next to the given position.
+// findAdjacentShot searches for a shot in the positions next to the given position.
 // it returns true if a shot was found.
 func (a *AI) findAdjacentShot(x, y int) (int, int, bool) {
 	//up

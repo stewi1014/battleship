@@ -14,6 +14,7 @@ func init() {
 
 func main() {
 	flag.Parse()
+
 	input := bufio.NewReader(os.Stdin)
 	player1, player2, err := gameSetup(input)
 	if err != nil {

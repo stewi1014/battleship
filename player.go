@@ -13,9 +13,9 @@ type Player interface {
 
 // Link is an interface, used by a Player, for querying information about the other Player.
 // The idea is to provide a single point of comminication between Players, allowing new implementations,
-// with new features (i.e. networking), to be made and dropped into existing code without any changes.
+// with new features (i.e. networking), to be made and dropped into existing code.
 type Link interface {
-	// TakeShot is called when a player takes a shot at the other player, returning if it was hit or not, and if sunk != 0, she ship that was sunk.
+	// TakeShot is called when a player takes a shot at the other player, returning if it was a hit or not, and if sunk != 0, she ship that was sunk.
 	// Players should keep track of their own score.
 	TakeShot(x, y int) (hit bool, sunk byte)
 }
