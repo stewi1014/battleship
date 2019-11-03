@@ -44,7 +44,8 @@ func (g *TerminalUI) Turn(remote Link) (won bool, err error) {
 		str = strings.ToLower(strings.TrimSpace(str))
 
 		if str == "h" {
-			fmt.Println("Location is a-j for vertical position, 1-10 for horizontal position. \n i.e. g6")
+			fmt.Println("Syntax: [location]")
+			fmt.Println("location is a-j for vertical position, 1-10 for horizontal position. \n i.e. g6")
 			continue
 		}
 
@@ -104,8 +105,8 @@ askAgain:
 		if str == "h" {
 			fmt.Print(`Syntax: [location] [direction]
 Possible directions are "up", "down", "left", "right"
-Location is a-j for vertical position, 1-10 for horizontal position.
-i.e c4 down
+location is a-j for vertical position, 1-10 for horizontal position.
+i.e h4 down
 `)
 			continue
 		}
