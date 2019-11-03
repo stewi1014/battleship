@@ -10,10 +10,10 @@ import (
 
 func init() {
 	flag.BoolVar(&hideAI, "no-show-ai", false, "no-show-ai hides the AI's board during gameplay")
-	flag.Parse()
 }
 
 func main() {
+	flag.Parse()
 	input := bufio.NewReader(os.Stdin)
 	player1, player2, err := gameSetup(input)
 	if err != nil {

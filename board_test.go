@@ -4,9 +4,6 @@ import (
 	"testing"
 )
 
-// It's mostly possible to test this program through use.
-// Many different invalid inputs have been tested, and the game played through with player vs player, player vs ai, and ai vs ai.
-
 func TestPlaceShip(t *testing.T) {
 	type args struct {
 		x, y      int
@@ -214,6 +211,22 @@ func TestParsePosition(t *testing.T) {
 		},
 		{
 			location: "x1",
+			wanterr:  true,
+		},
+		{
+			location: "",
+			wanterr:  true,
+		},
+		{
+			location: "x",
+			wanterr:  true,
+		},
+		{
+			location: "1",
+			wanterr:  true,
+		},
+		{
+			location: "this is long and has spaces",
 			wanterr:  true,
 		},
 	}
