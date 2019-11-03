@@ -1,5 +1,5 @@
 # Battleship
-Battleship is a simple two player game written in Golang, where players take turns guessing locations of enemy ships and try to sink them.
+Battleship is a simple two player game written in Golang, where players take turns guessing locations of enemy ships and try to sink them. It expects a monospace terminal font.
 
 Compiling is done with
 ```
